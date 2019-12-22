@@ -1,0 +1,5 @@
+- [ ] Write a program to encrypt and decrypt messages by string key
+- [ ] Write a program using bitmasks (preferably using binary literals)
+- [ ] Write a recursive method that takes a string and returns its characters in reverse order
+- [ ] Write a program to copy a file in which you can arbitrarily use filters to change files in the process of copying
+- [ ] Take knowledge about "take lines quantity" method in File class
