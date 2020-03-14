@@ -30,7 +30,6 @@ public class Input {
 		this.historyInput = new ArrayList<String[]>();
 		this.scanner = new Scanner(System.in);
 		this.validationTypes = null;
-		this.validationParams = null;
 
 		if (params.length >= 1) this.type = params[0];
 		if (params.length >= 2) this.title = params[1];
@@ -48,8 +47,8 @@ public class Input {
 
 			if (this.validationTypes != null) {
 				try {
-					for (int i = 0; i < this.validationTypes.length; i++) {
-						if (!this.validationTypes[i].validate(inputLine, this.validationParams[i])) {
+					for (IValidation validationPass: this.validationTypes) {
+						if (!validationPass.validate(inputLine)) {
 							throw new ValidationInputException("One of the input validations not passed!");
 						}
 					}
