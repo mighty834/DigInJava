@@ -25,13 +25,13 @@ public class Input {
 	 */
 	Input(String ... params) {
 		this.type = "String";
-		this.title = "Please, enter your value of '" + this.type + "' type:";
 		this.requestCount = 1;
 		this.historyInput = new ArrayList<String[]>();
 		this.scanner = new Scanner(System.in);
 		this.validationTypes = null;
 
 		if (params.length >= 1) this.type = params[0];
+		this.title = "Please, enter your value of '" + this.type + "' type:";
 		if (params.length >= 2) this.title = params[1];
 		if (params.length >= 3) this.requestCount = Integer.parseInt(params[2]);
 	}
@@ -54,7 +54,12 @@ public class Input {
 					}
 				}
 				catch (ValidationInputException exception) {
-					String[] temp = {inputLine, "error"};
+					String[] temp = {inputLine, "error", exception.toString()};
+					this.historyInput.add(temp);
+					isValidationPass = false;
+				}
+				catch (NumberFormatException exception) {
+					String[] temp = {inputLine, "error", "Your value must can be typecasted to '" + this.type + "'"};
 					this.historyInput.add(temp);
 					isValidationPass = false;
 				}
@@ -82,7 +87,11 @@ public class Input {
 	private void renderPastInputs() {
 		for (String[] input: this.historyInput) {
 			this.setRenderType(input[1]);
-			System.out.printf("<<< %s\n", input[0]);
+			if ((input.length > 2) && (input[2].length() > 0)) {
+				System.out.printf("<<< %s | %s\n", input[0], input[2]);
+			} else {
+				System.out.printf("<<< %s\n", input[0]);
+			}
 		}
 
 		this.setRenderType("");
@@ -96,7 +105,7 @@ public class Input {
 		ArrayList<Object> result = new ArrayList<Object>();
 
 		for (int i = 0; i < this.requestCount; i++) {
-			String[] temp = {this.getUserInputLine(), "success"};
+			String[] temp = {this.getUserInputLine(), "success", ""};
 			switch (this.type) {
 				case "String": result.add(temp[0]);
 				break;
