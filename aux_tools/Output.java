@@ -4,13 +4,12 @@ import java.util.*;
 public class Output {
 	public static final int MAX_LINE_SIZE = 200;
 	public static final String DELIMITER = " | ";
-	public static final String LINE_BEGIN = "< ";
+	public static final String LINE_BEGIN = "<";
 	public static final String LINE_BREAK = "...\n";
-	public static final String LINE_END = " >";
+	public static final String LINE_END = ">\n";
 
 	private static ArrayList<String> convertData(ArrayList<Object> data) {
 		ArrayList<String> result = new ArrayList<String>();
-
 		for (Object elem: data) {
 			result.add(elem.toString());
 		}
@@ -26,6 +25,10 @@ public class Output {
 	public static String println(Object value) {
 		System.out.println(value);
 		return value.toString();
+	}
+
+	public static ArrayList<Object> convertArray(Object[] data) {
+		return new ArrayList<Object>(Arrays.asList(data));
 	}
 
 	public static String printList(ArrayList<Object> list) {
@@ -53,18 +56,55 @@ public class Output {
 			result += line + "\n" + LINE_END;
 		}
 
+		print(result);
 		return result;
 	}
 
-    public static void main(String[] args) {
-		Integer[] temp = new Integer[10];
+	public static String printList(Object[] data) {
+		return printList(convertArray(data));
+	}
 
-		for (int i = 1; i <= 10; i++) {
-			temp[i - 1] = i * i * i;
+	public static String printTable(ArrayList<Object> data, String title) {
+		// Here will be code
+		return "";
+	}
+
+	public static String printColumnsTable(
+		ArrayList<String> columnsTitles,
+		ArrayList<Object> data,
+		String title
+	) {
+		// Here will be code
+		return "";	
+	}
+
+	public static String printRowsTable(
+		ArrayList<String> rowsTitles,
+		ArrayList<Object> data,
+		String title
+	) {
+		// Here will be code
+		return "";
+	}
+
+	public static String printBothTable(
+		ArrayList<String> columnsTitles,
+		ArrayList<String> rowsTitles,
+		ArrayList<Object> data,
+		String title
+	) {
+		// Here will be code
+		return "";
+	}
+
+    public static void main(String[] args) {
+		ArrayList<Object> data = new ArrayList<Object>();
+
+		for (int i = 1; i <= 70; i++) {
+			data.add(i * i * i);
 		}
 
-		String str = Output.printList(new ArrayList<Object>(Arrays.asList(temp)));
-		println(str);
+		printList(data);
 	}
 }
 
