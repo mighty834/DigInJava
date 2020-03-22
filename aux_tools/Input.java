@@ -3,18 +3,10 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Input {
-	public static final String ANSI_RESET = "\u001B[0m";
-	public static final String ANSI_BLACK = "\u001B[30m";
-	public static final String ANSI_RED = "\u001B[31m";
-	public static final String ANSI_GREEN = "\u001B[32m";
-	public static final String ANSI_WHITE = "\u001B[37m";
-	public static final String ANSI_CLEAR = "\033[H\033[2J";
-
 	private String type;
 	private String title;
 	private int requestCount;
 	private IValidation[] validationTypes;
-	private String[] validationParams;
 	private ArrayList<String[]> historyInput;
 	private Scanner scanner;
 
@@ -54,12 +46,12 @@ public class Input {
 					}
 				}
 				catch (ValidationInputException exception) {
-					String[] temp = {inputLine, "error", exception.toString()};
+					String[] temp = {inputLine, "red", exception.toString()};
 					this.historyInput.add(temp);
 					isValidationPass = false;
 				}
 				catch (NumberFormatException exception) {
-					String[] temp = {inputLine, "error", "Your value must can be typecasted to '" + this.type + "'"};
+					String[] temp = {inputLine, "red", "Your value must can be typecasted to '" + this.type + "'"};
 					this.historyInput.add(temp);
 					isValidationPass = false;
 				}
@@ -69,24 +61,9 @@ public class Input {
 		return inputLine;
 	}
 
-	private void setRenderType(String type) {
-		switch (type) {
-			case "error": System.out.print(ANSI_RED);
-			break;
-			case "ordinary": System.out.print(ANSI_WHITE);
-			break;
-			case "success": System.out.print(ANSI_GREEN);
-			break;
-			case "shadow": System.out.print(ANSI_BLACK);
-			break;
-			default: System.out.println(ANSI_RESET);
-		}
-	}
-				
-
 	private void renderPastInputs() {
 		for (String[] input: this.historyInput) {
-			this.setRenderType(input[1]);
+			Terminal.setColor(input[1]);
 			if ((input.length > 2) && (input[2].length() > 0)) {
 				System.out.printf("<<< %s | %s\n", input[0], input[2]);
 			} else {
@@ -94,7 +71,7 @@ public class Input {
 			}
 		}
 
-		this.setRenderType("");
+		Terminal.setColor("");
 	}
 
 	public ArrayList<String[]> getHistoryInput() {
@@ -105,7 +82,7 @@ public class Input {
 		ArrayList<Object> result = new ArrayList<Object>();
 
 		for (int i = 0; i < this.requestCount; i++) {
-			String[] temp = {this.getUserInputLine(), "success", ""};
+			String[] temp = {this.getUserInputLine(), "green", ""};
 			switch (this.type) {
 				case "String": result.add(temp[0]);
 				break;
@@ -130,28 +107,18 @@ public class Input {
 	}
 
 	public void refreshScreen() {
-		clear();
+		Terminal.clear();
 		this.renderPastInputs();
 	}
 
 	public void renderInvitation(String title, String type) {
 		this.refreshScreen();
-		this.setRenderType(type);
+		Terminal.setColor(type);
 		System.out.printf("| %s |\n>>> ", title);
 	}
 
 	public void setValidationTypes(IValidation[] validationTypes) {
 		this.validationTypes = validationTypes;
-	}
-
-	public void setValidationParams(String[] validationParams) {
-		this.validationParams = validationParams;
-	}
-
-	public static void clear() {
-		System.out.println(ANSI_CLEAR);
-		System.out.print(ANSI_RESET);
-		System.out.flush();
 	}
 }
 
