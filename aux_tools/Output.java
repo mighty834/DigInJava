@@ -18,23 +18,78 @@ public class Output {
 		return result;
 	}
 
-	private static String genTableTitle(String title) {
+	private static String genTableTitle(String title, int size) {
 		String result = "";
 		int limiter = 0;
 
-		limiter = (int)Math.floor(MAX_LINE_SIZE / 2) - (int)Math.floor(title.length() / 2);
+		limiter = (int)Math.floor(size / 2) - (int)Math.floor(title.length() / 2);
 		for (int i = 0; i < limiter; i++) {
 			result += TABLE_TITLE_ROW;
 		}
 		result += title;
 
-		limiter = MAX_LINE_SIZE - result.length();
+		limiter = size - result.length();
 		for (int i = 0; i < limiter; i++) {
 			result += TABLE_TITLE_ROW;
 		}
 		result += "\n";
 		
 		return result;
+	}
+
+    private static String genTableTitle(String title) {
+        return genTableTitle(title, MAX_LINE_SIZE);
+    }
+
+	private static String genRowOfColumnTitles(ArrayList<String> titles, int cellSize) {
+		String result = "";
+        for (String title: titles) {
+            if (title.length() > cellSize) {
+                cellSize = title.length();
+            }
+        }
+        int tableWidth = cellSize * titles.size() + DELIMITER.length() * (titles.size() + 1);
+        
+        result += Terminal.getColor("cyan");
+        for (int i = 0; i < tableWidth; i++) {
+            result += TABLE_TITLE_ROW;
+        }
+        result += "\n";
+
+        for (String title: titles) {
+            String temp = "";
+            result += DELIMITER;
+
+            for (int i = title.length(); i < cellSize; i++) {
+                temp += " ";
+            }
+            
+            result += temp + title;
+        }
+        result += DELIMITER + "\n";
+        
+        for (int i = 0; i < tableWidth; i++) {
+            result += TABLE_TITLE_ROW;
+        }
+        result += "\n" + Terminal.getColor("");
+
+		return result;
+	}
+
+	private static String genColumnOfRowTitles(ArrayList<String> titles) {
+		// Here will be code
+		return "";
+	}
+
+	private static int getCellSize(ArrayList<String> list) {
+		int cellSize = 0;
+		for (String elem: list) {
+			if (elem.length() > cellSize) {
+				cellSize = elem.length();
+			}
+		}
+		
+		return cellSize;
 	}
 
 	public static String print(Object value) {
@@ -87,14 +142,7 @@ public class Output {
 	public static String printTable(ArrayList<Object> list, String title) {
 		ArrayList<String> data = convertData(list);
 		String result = "";
-
-		int cellSize = 0;
-		for (String elem: data) {
-			if (cellSize < elem.length()) {
-				cellSize = elem.length();
-			}
-		}
-
+		int cellSize = getCellSize(data);
 		int cellsLineQuantity = (int)Math.ceil(MAX_LINE_SIZE / (cellSize + DELIMITER.length()));
 
 		result += genTableTitle(title);
@@ -145,10 +193,15 @@ public class Output {
 
 	public static String printColumnsTable(
 		ArrayList<String> columnsTitles,
-		ArrayList<Object> data,
+		ArrayList<Object> list,
 		String title
 	) {
-		// Here will be code
+		ArrayList<String> data = convertData(list);
+		String result = "";
+		result += genRowOfColumnTitles(columnsTitles, getCellSize(data));
+
+	    print(result);	
+
 		return "";	
 	}
 
@@ -173,12 +226,17 @@ public class Output {
 
     public static void main(String[] args) {
 		ArrayList<Object> data = new ArrayList<Object>();
+		ArrayList<String> titles = new ArrayList<String>();
+		titles.add("First title");
+		titles.add("Second title");
+		titles.add("Third title");
+        titles.add("Fourth title");
 
 		for (int i = 1; i <= 100; i++) {
 			data.add(i * i * i);
 		}
 
-		printTable(data, "Look to my special table!");
+		printColumnsTable(titles, data, "Hello, this is column table");
 	}
 }
 
