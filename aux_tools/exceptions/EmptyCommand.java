@@ -1,6 +1,6 @@
 package aux_tools;
 
-public class EmptyCommand extends Exception {
+public class EmptyCommand extends MainException {
     private String message;
 
     EmptyCommand() {

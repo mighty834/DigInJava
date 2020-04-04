@@ -1,6 +1,6 @@
 package aux_tools;
 
-public class WrongArguments extends Exception {
+public class WrongArguments extends MainException {
     private String message;
 
     WrongArguments(String commandName) {

@@ -15,7 +15,7 @@ public class Input {
 	 * @param second define title name, in input line
 	 * @param third define how many times input will be requested
 	 */
-	Input(String ... params) {
+	public Input(String ... params) {
 		this.type = "String";
 		this.requestCount = 1;
 		this.historyInput = new ArrayList<String[]>();
@@ -83,21 +83,29 @@ public class Input {
 
 		for (int i = 0; i < this.requestCount; i++) {
 			String[] temp = {this.getUserInputLine(), "green", ""};
-			switch (this.type) {
-				case "String": result.add(temp[0]);
-				break;
-				case "Integer": result.add(Integer.parseInt(temp[0]));
-				break;
-				case "Long": result.add(Long.parseLong(temp[0]));
-				break;
-				case "Float": result.add(Float.parseFloat(temp[0]));
-				break;
-				case "Double": result.add(Double.parseDouble(temp[0]));
-				break;
-				case "Boolean": result.add(Boolean.parseBoolean(temp[0]));
-				break;
-				default: result.add(temp[0]);
-			}
+
+            try {
+                switch (this.type) {
+                    case "String": result.add(temp[0]);
+                    break;
+                    case "Integer": result.add(Integer.parseInt(temp[0]));
+                    break;
+                    case "Long": result.add(Long.parseLong(temp[0]));
+                    break;
+                    case "Float": result.add(Float.parseFloat(temp[0]));
+                    break;
+                    case "Double": result.add(Double.parseDouble(temp[0]));
+                    break;
+                    case "Boolean": result.add(Boolean.parseBoolean(temp[0]));
+                    break;
+                    default: result.add(temp[0]);
+                }
+            }
+            catch (NumberFormatException exception) {
+                temp[1] = "red";
+                temp[2] = "Your value must can be typecasted to '" + this.type + "'";
+                i--;
+            }
 
 			this.historyInput.add(temp);
 		}

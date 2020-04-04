@@ -2,9 +2,14 @@
 resultDir="./classes/"
 notBuildKey="-nb"
 hardBuildKey="-hb"
+moreInfoKey="-mi"
 
 function compile {
     javac -classpath . -d $resultDir */**/*.java
+}
+
+function compileWithInfo {
+    javac -Xlint -classpath . -d $resultDir */**/*.java
 }
 
 function run {
@@ -30,6 +35,11 @@ then
     elif [ $1 = $hardBuildKey ]
     then
         hardBuild
+        shift
+    elif [ $1 = $moreInfoKey ]
+    then
+        compileWithInfo
+        buildAssets
         shift
     else
         compile

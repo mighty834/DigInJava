@@ -1,6 +1,6 @@
 package aux_tools;
 
-public class MissingBuildPath extends Exception {
+public class MissingBuildPath extends MainException {
     private String message;
 
     MissingBuildPath() {

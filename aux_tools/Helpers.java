@@ -12,9 +12,11 @@ public class Helpers {
         "# Topics\n\n" +
         "* \n";
     private static final String templateOfMainFile = "" +
-        "package exercises;\n\n" +
+        "package exercises;\n" +
+        "import aux_tools.*;\n\n" +
         "class Main${anchor_1} {\n" +
-        "\tpublic static void main(String[] args) {\n\n" +
+        "@SuppressWarnings(\"unchecked\")" +
+        "\tpublic static void main(String[] args) throws MainException {\n\n" +
         "\t}\n" +
         "}\n\n";
     

@@ -1,6 +1,6 @@
 package aux_tools;
 
-public class ValidationInputException extends Exception {
+public class ValidationInputException extends MainException {
 	private String message;
 
 	ValidationInputException(String message) {

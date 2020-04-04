@@ -6,10 +6,12 @@ public class Output {
 	public static final String DELIMITER = " | ";
 	public static final String LINE_BEGIN = "<";
 	public static final String LINE_BREAK = "...\n";
+    public static final String STR_BREAK = "...";
+    public static final String EMPTY_CELL = "EMPTY";
 	public static final String LINE_END = ">\n";
 	public static final String TABLE_TITLE_ROW = "=";
 
-	private static ArrayList<String> convertData(ArrayList<Object> data) {
+	private static ArrayList<String> convertDataToStr(ArrayList<Object> data) {
 		ArrayList<String> result = new ArrayList<String>();
 		for (Object elem: data) {
 			result.add(elem.toString());
@@ -18,7 +20,17 @@ public class Output {
 		return result;
 	}
 
-	private static String genTableTitle(String title, int size) {
+    @SuppressWarnings("unchecked")
+	private static ArrayList<String> mergeLists(ArrayList<String> ... lists) {
+        ArrayList<String> result = new ArrayList<String>();
+
+        for (ArrayList<String> list: lists) {
+            result.addAll(list);
+        }
+        return result;
+    }
+
+    private static String genTableTitle(String title, int size) {
 		String result = "";
 		int limiter = 0;
 
@@ -41,47 +53,59 @@ public class Output {
         return genTableTitle(title, MAX_LINE_SIZE);
     }
 
-	private static String genRowOfColumnTitles(ArrayList<String> titles, int cellSize) {
-		String result = "";
-        for (String title: titles) {
-            if (title.length() > cellSize) {
-                cellSize = title.length();
-            }
-        }
-        int tableWidth = cellSize * titles.size() + DELIMITER.length() * (titles.size() + 1);
-        
-        result += Terminal.getColor("cyan");
-        for (int i = 0; i < tableWidth; i++) {
-            result += TABLE_TITLE_ROW;
+    private static String genCustomRow(String elem, int rowLength) {
+        String result = "";
+        for (int i = 0; i < rowLength; i++) {
+            result += elem;
         }
         result += "\n";
 
-        for (String title: titles) {
-            String temp = "";
-            result += DELIMITER;
+        return result;
+    }
 
-            for (int i = title.length(); i < cellSize; i++) {
-                temp += " ";
-            }
-            
-            result += temp + title;
-        }
-        result += DELIMITER + "\n";
+	private static String genRowOfColumnTitles(
+        ArrayList<String> titles,
+        String mainTitle,
+        int cellSize,
+        int tableWidth
+    ) {
+		String result = "";
         
-        for (int i = 0; i < tableWidth; i++) {
-            result += TABLE_TITLE_ROW;
+        for (String title: titles) {
+            if (result.length() == 0) {
+                result += genTableTitle(mainTitle, tableWidth);
+                result += genCustomRow(TABLE_TITLE_ROW, tableWidth);
+                result += LINE_BEGIN;
+            } else {
+                result += DELIMITER;
+            }
+
+            if (title.length() > cellSize) {
+                result += title.substring(0, cellSize - STR_BREAK.length()) + STR_BREAK;
+            } else {
+                String temp = "";
+                for (int i = title.length(); i < cellSize; i++) {
+                    temp += " ";
+                }
+
+                result += temp + title;
+            }
         }
-        result += "\n" + Terminal.getColor("");
+
+        for (
+            int i = result.substring(result.lastIndexOf("\n"), result.length()).length();
+            i < tableWidth;
+            i++    
+        ) {
+            result += " ";
+        }
+        result += LINE_END;
+        result += genCustomRow(TABLE_TITLE_ROW, tableWidth);
 
 		return result;
 	}
 
-	private static String genColumnOfRowTitles(ArrayList<String> titles) {
-		// Here will be code
-		return "";
-	}
-
-	private static int getCellSize(ArrayList<String> list) {
+	private static int getCellSize(List<String> list) {
 		int cellSize = 0;
 		for (String elem: list) {
 			if (elem.length() > cellSize) {
@@ -102,12 +126,24 @@ public class Output {
 		return value.toString();
 	}
 
-	public static ArrayList<Object> convertArray(Object[] data) {
+    public static String print(Object value, String color) {
+        return print(
+            Terminal.getColor(color) + value.toString() + Terminal.getColor("")
+        );
+    }
+
+    public static String println(Object value, String color) {
+        return println(
+            Terminal.getColor(color) + value.toString() + Terminal.getColor("")
+        );
+    }
+
+	public static ArrayList<Object> convertArrayToList(Object[] data) {
 		return new ArrayList<Object>(Arrays.asList(data));
 	}
 
 	public static String printList(ArrayList<Object> list) {
-		ArrayList<String> data = convertData(list);
+		ArrayList<String> data = convertDataToStr(list);
 		String result = "";
 
 		String line = "";
@@ -136,40 +172,51 @@ public class Output {
 	}
 
 	public static String printList(Object[] data) {
-		return printList(convertArray(data));
+		return printList(convertArrayToList(data));
 	}
 
-	public static String printTable(ArrayList<Object> list, String title) {
-		ArrayList<String> data = convertData(list);
+	public static String genTable(ArrayList<Object> list, String title, int width, int cellSize) {
+		ArrayList<String> data = convertDataToStr(list);
 		String result = "";
-		int cellSize = getCellSize(data);
-		int cellsLineQuantity = (int)Math.ceil(MAX_LINE_SIZE / (cellSize + DELIMITER.length()));
+		int cellsLineQuantity = (int)Math.ceil(width / (cellSize + DELIMITER.length()));
 
-		result += genTableTitle(title);
+        if (title.length() > 0) {
+		    result += genTableTitle(title, width);
+        }
 	
 		int lineCounter = 0;
 		int specialQuantity = -1;
-		for (String elem: data) {
+		for (int elemIndex = 0; elemIndex < data.size(); elemIndex++) {
+            String elem = data.get(elemIndex);
+
 			if (lineCounter < cellsLineQuantity) {
 				if (lineCounter == 0) {
 					 result += LINE_BEGIN;
 				}
 
-				for (int i = elem.length(); i < cellSize; i++) {
-					result += " ";
-				}
+                if (elem.length() > cellSize) {
+                    result += elem.substring(0, cellSize - STR_BREAK.length()) + STR_BREAK;
+                } else {
+                    for (int i = elem.length(); i < cellSize; i++) {
+                        result += " ";
+                    }
+                   
+                    result += elem;
+                }
 
-				if (lineCounter == cellsLineQuantity - 1) {
-					result += elem;
-				} else {
-					result += elem + DELIMITER;
-				}
+                if (lineCounter != cellsLineQuantity - 1) {
+                    result += DELIMITER;
+                }
 
 				lineCounter++;
 			} else {
 				if (lineCounter == cellsLineQuantity) {
 					if (specialQuantity == -1) {
-						specialQuantity = MAX_LINE_SIZE - result.length() + MAX_LINE_SIZE;
+                        if (title.length() == 0) {
+					        specialQuantity = width - result.length();
+                        } else {
+                            specialQuantity = 2 * width - result.length();
+                        }
 					}
 
 					for (int i = 0; i < specialQuantity; i++) {
@@ -178,32 +225,127 @@ public class Output {
 					result += LINE_END;
 				}
 				lineCounter = 0;
+                elemIndex--;
 			}
 		}
 
-		specialQuantity = MAX_LINE_SIZE - (result.length() - result.lastIndexOf("<") - 1 + LINE_END.length());
+		specialQuantity = width - (result.length() - result.lastIndexOf(LINE_BEGIN) - 1 + LINE_END.length());
+        if (title.length() == 0) specialQuantity++;
+
 		for (int i = 0; i < specialQuantity; i++) {
 			result += " ";
 		}
 
-		result += LINE_END;
-		print(result);
+        if (result.charAt(result.length() - 1) != '\n') {
+            result += LINE_END;
+        }
+
 		return result;
 	}
+
+    public static String genTable(ArrayList<Object> list, String title) {
+        return genTable(list, title, MAX_LINE_SIZE, getCellSize(convertDataToStr(list)));
+    }
+
+    public static String printTable(ArrayList<Object> list, String title, int width, int cellSize) {
+        return print(genTable(list, title, width, cellSize));
+    }
+
+    public static String printTable(ArrayList<Object> list, String title) {
+        return print(genTable(list, title));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ArrayList<Object> aggregateData(ArrayList<Object> ... lists) {
+        ArrayList<Object> result = new ArrayList<Object>();
+        int maxListSize = 0;
+        for (ArrayList<Object> list: lists) {
+            if (list.size() > maxListSize) {
+                maxListSize = list.size();
+            }
+        }
+
+        for (int i = 0; i < maxListSize; i++) {
+            for (ArrayList<Object> list: lists) {
+                if (list.size() > i) {
+                    result.add(list.get(i));
+                } else {
+                    result.add(EMPTY_CELL);
+                }
+            }
+        }
+
+        return result;
+    }
 
 	public static String printColumnsTable(
 		ArrayList<String> columnsTitles,
 		ArrayList<Object> list,
-		String title
+		String title,
+        String color,
+        int customCellSize
 	) {
-		ArrayList<String> data = convertData(list);
-		String result = "";
-		result += genRowOfColumnTitles(columnsTitles, getCellSize(data));
+		ArrayList<String> data = convertDataToStr(list);
+        int cellSize;
+        if (customCellSize > 0) {
+            cellSize = customCellSize + STR_BREAK.length();
+        } else {
+            @SuppressWarnings("unchecked")
+            ArrayList<String> tempList = mergeLists(data, columnsTitles);
+            cellSize = getCellSize(tempList);
+        }
 
-	    print(result);	
+        int tableWidth = cellSize * columnsTitles.size() + DELIMITER.length() * (columnsTitles.size() + 1);
+        
+		String result = Terminal.getColor(color);
+		result += genRowOfColumnTitles(columnsTitles, title, cellSize, tableWidth);
+        result += Terminal.getColor("");
+        result += genTable(list, "", tableWidth - 1, cellSize);
+
+	    print(result);
 
 		return "";	
 	}
+
+    @SuppressWarnings("unchecked")
+    public static String printColumnsTable(
+        ArrayList<String> columnsTitles,
+        String title,
+        String color,
+        int customCellSize,
+        ArrayList<Object> ... columns
+    ) {
+        @SuppressWarnings("unchecked")
+        ArrayList<Object> allColumns = aggregateData(columns);
+        
+        return printColumnsTable(
+            columnsTitles,
+            allColumns,
+            title,
+            color,
+            customCellSize
+        );
+    }
+
+    public static String printColumnsTable(
+        ArrayList<String> columnsTitles,
+        ArrayList<Object> list,
+        String title
+    ) {
+        return printColumnsTable(columnsTitles, list, title, "cyan", 0);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static String printColumnsTable(
+        ArrayList<String> columnsTitles,
+        String title,
+        ArrayList<Object> ... columns
+    ) {
+        @SuppressWarnings("unchecked")
+        ArrayList<Object> allColumns = aggregateData(columns);
+
+        return printColumnsTable(columnsTitles, allColumns, title);
+    }
 
 	public static String printRowsTable(
 		ArrayList<String> rowsTitles,
@@ -222,21 +364,6 @@ public class Output {
 	) {
 		// Here will be code
 		return "";
-	}
-
-    public static void main(String[] args) {
-		ArrayList<Object> data = new ArrayList<Object>();
-		ArrayList<String> titles = new ArrayList<String>();
-		titles.add("First title");
-		titles.add("Second title");
-		titles.add("Third title");
-        titles.add("Fourth title");
-
-		for (int i = 1; i <= 100; i++) {
-			data.add(i * i * i);
-		}
-
-		printColumnsTable(titles, data, "Hello, this is column table");
 	}
 }
 
