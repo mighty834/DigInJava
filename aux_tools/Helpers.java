@@ -7,7 +7,6 @@ public class Helpers {
     private static String[] arguments;
     private static String rootBuildPath;
     private static final String templateOfTaskFile = "" +
-        "# Name\n\n\n\n" +
         "# Description\n\n\n\n" +
         "# Topics\n\n" +
         "* \n";
