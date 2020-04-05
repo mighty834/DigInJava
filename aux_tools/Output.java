@@ -314,7 +314,11 @@ public class Output {
         String color,
         int customCellSize,
         ArrayList<Object> ... columns
-    ) {
+    ) throws ColumnsTableException {
+        if (columnsTitles.size() != columns.length) {
+            throw new ColumnsTableException("titles quantity must be equal to columns");
+        }
+
         @SuppressWarnings("unchecked")
         ArrayList<Object> allColumns = aggregateData(columns);
         
@@ -340,7 +344,11 @@ public class Output {
         ArrayList<String> columnsTitles,
         String title,
         ArrayList<Object> ... columns
-    ) {
+    ) throws ColumnsTableException {
+        if (columnsTitles.size() != columns.length) {
+            throw new ColumnsTableException("titles quantity must be equal to columns");
+        }
+
         @SuppressWarnings("unchecked")
         ArrayList<Object> allColumns = aggregateData(columns);
 
