@@ -14,7 +14,7 @@ public class Helpers {
         "package exercises;\n" +
         "import aux_tools.*;\n\n" +
         "class Main${anchor_1} {\n" +
-        "@SuppressWarnings(\"unchecked\")" +
+        "\t@SuppressWarnings(\"unchecked\")\n" +
         "\tpublic static void main(String[] args) throws MainException {\n\n" +
         "\t}\n" +
         "}\n\n";
