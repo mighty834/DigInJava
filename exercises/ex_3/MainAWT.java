@@ -1,16 +1,29 @@
 package exercises;
 import aux_tools.*;
+import java.awt.*;
+import java.awt.event.*;
 
-class MainAWT {
+class MainAWT extends Frame implements ActionListener {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws MainException {
-        if (args.length > 0) {
-            for (String arg: args) {
-                Output.println("ARG>>> " + arg);
-            }
-        } else {
-            Output.println("No any args here...");
-        }
-    }
+		MainAWT awt = new MainAWT();	
+	}
+
+	MainAWT() {
+		Button button = new Button("Push for close the window");
+		button.setBounds(450, 360, 300, 80);
+
+		add(button);
+		setSize(1200, 800);
+		setLayout(null);
+		setVisible(true);
+
+		button.addActionListener(this);
+	}
+
+	public void actionPerformed(ActionEvent ae) {
+		Output.println("It's work!");
+		System.exit(0);
+	}
 }
 

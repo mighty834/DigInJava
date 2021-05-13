@@ -2,14 +2,24 @@ package aux_tools;
 import java.util.*;
 
 public class Output {
-	public static final int MAX_LINE_SIZE = 200;
-	public static final String DELIMITER = " | ";
-	public static final String LINE_BEGIN = "<";
-	public static final String LINE_BREAK = "...\n";
-    public static final String STR_BREAK = "...";
-    public static final String EMPTY_CELL = "EMPTY";
-	public static final String LINE_END = ">\n";
+	public static final int MAX_LINE_SIZE 	   = 200;
+	public static final String DELIMITER  	   = " | ";
+	public static final String LINE_BEGIN 	   = "<";
+	public static final String LINE_BREAK 	   = "...\n";
+    public static final String STR_BREAK  	   = "...";
+    public static final String EMPTY_CELL      = "EMPTY";
+	public static final String LINE_END   	   = ">\n";
 	public static final String TABLE_TITLE_ROW = "=";
+
+	public static final String RESET_COLOR  = "";
+	public static final String BLACK_COLOR  = "black";
+	public static final String RED_COLOR    = "red";
+	public static final String GREEN_COLOR  = "green";
+	public static final String YELLOW_COLOR = "yellow";
+	public static final String BLUE_COLOR   = "blue";
+	public static final String WHITE_COLOR  = "white";
+	public static final String PURPLE_COLOR = "purple";
+	public static final String CYAN_COLOR   = "cyan";
 
 	private static ArrayList<String> convertDataToStr(ArrayList<Object> data) {
 		ArrayList<String> result = new ArrayList<String>();
@@ -137,6 +147,14 @@ public class Output {
             Terminal.getColor(color) + value.toString() + Terminal.getColor("")
         );
     }
+
+	public static String paint(Object value, String color) {
+		return Terminal.getColor(color) + value.toString() + Terminal.getColor("");
+	}
+
+	public static String paintln(Object value, String color) {
+		return Terminal.getColor(color) + value.toString() + Terminal.getColor("") + "\n";
+	}
 
 	public static ArrayList<Object> convertArrayToList(Object[] data) {
 		return new ArrayList<Object>(Arrays.asList(data));

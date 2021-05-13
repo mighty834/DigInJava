@@ -22,3 +22,4 @@ public class ValidationTypes {
 		return result;
 	}
 }
+
