@@ -3,7 +3,7 @@ import aux_tools.*;
 import java.awt.*;
 import java.awt.event.*;
 
-class MainAWT extends Frame implements ActionListener {
+public class MainAWT extends Frame implements ActionListener {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws MainException {
 		MainAWT awt = new MainAWT();	

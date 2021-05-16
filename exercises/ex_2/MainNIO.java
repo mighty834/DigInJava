@@ -6,7 +6,7 @@ import java.nio.file.*;
 import java.nio.channels.*;
 import java.util.*;
 
-class MainNIO {
+public class MainNIO {
     private static final String RECEIVER = "./classes/assets/receiver.txt";
     private static final String SOURCE = "./classes/assets/source.txt";
     private static final String GEN_COLOR = "cyan";
@@ -40,8 +40,12 @@ class MainNIO {
         channel.close();
     }
 
+	public static void help() {
+		Output.println("HELLO HELP!");
+	}
+
     @SuppressWarnings("unchecked")
-    public static void main(String[] args) throws MainException, IOException {
+    public static void main(String[] args) throws MainException, IOException, Exception {
         Output.print("This data from source: ");
         Output.print(read(SOURCE), GEN_COLOR);
 

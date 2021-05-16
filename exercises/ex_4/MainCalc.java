@@ -3,7 +3,7 @@ import aux_tools.*;
 import java.awt.*;
 import java.awt.event.*;
 
-class MainCalc extends Frame implements ActionListener {
+public class MainCalc extends Frame implements ActionListener {
 	public static final String calcTitle = "Calculator";	
 	public static final int calcHeight   = 400;
 	public static final int calcWidth    = 300;

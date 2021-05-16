@@ -2,7 +2,7 @@ package exercises;
 import aux_tools.*;
 import java.util.ArrayList;
 
-class MainFibonacci {
+public class MainFibonacci {
     private static ArrayList<Object> reverseSeq(ArrayList<Object> seq) {
         ArrayList<Object> result = new ArrayList<Object>();
         for (int i = seq.size() - 1; i >= 0; i--) {

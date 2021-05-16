@@ -1,4 +1,4 @@
 exercises.md
 /classes/
 **/*.swp
-
+/engine/auto_gen/

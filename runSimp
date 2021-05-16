@@ -1,0 +1,16 @@
+#!/bin/zsh
+resultDir="./classes/"
+
+function compile {
+	javac -classpath . -d $resultDir ./**/*.java
+	#javac -classpath . -d $resultDir ./aux_tools/**/*.java
+	#javac -classpath . -d $resultDir ./exercises/**/*.java
+}
+
+function run {
+	java -classpath $resultDir engine.ClassGenerator $*
+}
+
+compile
+run $*
+
