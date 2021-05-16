@@ -1,9 +1,9 @@
-package aux_tools;
+package engine.exceptions;
 
 public class MissingBuildPath extends MainException {
     private String message;
 
-    MissingBuildPath() {
+    public MissingBuildPath() {
         this.message = "You must specify build path for assets biuld!";
     }
 

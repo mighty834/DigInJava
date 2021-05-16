@@ -1,5 +1,6 @@
 package exercises;
 import aux_tools.*;
+import engine.exceptions.*;
 import java.awt.*;
 import java.awt.event.*;
 

@@ -1,9 +1,9 @@
-package aux_tools;
+package engine.exceptions;
 
 public class EmptyCommand extends MainException {
     private String message;
 
-    EmptyCommand() {
+    public EmptyCommand() {
         this.message = "Command argument can't be empty!";
     }
 

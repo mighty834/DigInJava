@@ -1,9 +1,9 @@
-package aux_tools;
+package engine.exceptions;
 
 public class WrongCommand extends MainException {
     private String message;
 
-    WrongCommand(String commandName) {
+    public WrongCommand(String commandName) {
         this.message = "Command '" + commandName + "' is not exist!";
     }
 

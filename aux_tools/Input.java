@@ -1,4 +1,5 @@
 package aux_tools;
+import engine.exceptions.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 

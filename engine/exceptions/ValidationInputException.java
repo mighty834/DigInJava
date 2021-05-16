@@ -1,9 +1,9 @@
-package aux_tools;
+package engine.exceptions;
 
 public class ValidationInputException extends MainException {
 	private String message;
 
-	ValidationInputException(String message) {
+	public ValidationInputException(String message) {
 		this.message = "Validation problem - " + message;
 	}
 

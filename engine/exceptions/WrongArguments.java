@@ -1,9 +1,9 @@
-package aux_tools;
+package engine.exceptions;
 
 public class WrongArguments extends MainException {
     private String message;
 
-    WrongArguments(String commandName) {
+    public WrongArguments(String commandName) {
         this.message = "You pass wrong set of arguments to command: " + commandName;
     }
 

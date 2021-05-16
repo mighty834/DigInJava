@@ -1,9 +1,9 @@
-package aux_tools;
+package engine.exceptions;
 
 public class ColumnsTableException extends MainException {
     private String message;
 
-    ColumnsTableException(String cause) {
+    public ColumnsTableException(String cause) {
         this.message = "Your problem is: " + cause;
     }
 

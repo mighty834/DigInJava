@@ -1,5 +1,7 @@
-package aux_tools;
-import engine.*;
+package engine;
+import aux_tools.*;
+import engine.auto_gen.*;
+import engine.exceptions.*;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.io.File;
@@ -33,28 +35,13 @@ public class Commander {
 				}
 			}
 
-			Loader loader = new Loader(Loader.PATH_TO_EXERCISES + Loader.EX_PREFIX + ex_num + "/");
-			for (File file : loader.getAllFilesFromPath()) {
-				if (file.getName().contains("Main")) {
-					String name = "exercises."  + file.getName().substring(0, 7);
-					Output.println(name);
-
-					Class clazz = Class.forName(name);
-					for (Method method : clazz.getMethods()) {
-						Output.println(method, Output.YELLOW_COLOR);
-						if (method.getName().contains("help")) {
-							Object[] obj = new Object[arguments.length];
-							for (int i = 0; i < arguments.length; i++) {
-								obj[i] = arguments[i];
-							}
-
-							method.invoke(clazz);
-						}
-					}
-					
-					//MainNIO.main(arguments);
-				}	
+			String[] invokeArguments = new String[arguments.length + 1];
+			invokeArguments[0] = ex_num + "";
+			for (int i = 1; i < invokeArguments.length; i++) {
+				invokeArguments[i] = arguments[i - 1];
 			}
+
+			engine.auto_gen.Invoker.main(invokeArguments);
 
 		} else {
 			switch (command) {

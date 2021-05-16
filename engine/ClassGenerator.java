@@ -28,7 +28,7 @@ class ClassGenerator {
 	"import java.util.Arrays;\n" +
 	"import aux_tools.*;\n" +
 	"import exercises.*;\n\n"+
-	"class Invoker {\n" +
+	"public class Invoker {\n" +
 	"\tpublic static void main(String[] args) throws Exception {\n" +
 	"\t\tif (args.length < 1) throw new Exception(\"Bad arguments in Invoker\");\n\n" +
 	"\t\tint ex_num = Integer.parseInt(args[0]);\n\n" + 
