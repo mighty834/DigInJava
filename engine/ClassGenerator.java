@@ -53,6 +53,10 @@ class ClassGenerator {
 		File autoGen = new File(PATH_TO_AUTO_GEN);
 		
 		if (autoGen.exists()) {
+			File[] allAutoGenFiles = autoGen.listFiles();
+			for (File file : allAutoGenFiles) {
+				file.delete();
+			}
 			autoGen.delete();
 		}
 

@@ -13,7 +13,8 @@ public class Helpers {
         "* \n";
     private static final String templateOfMainFile = "" +
         "package exercises;\n" +
-        "import aux_tools.*;\n\n" +
+        "import aux_tools.*;\n" +
+		"import engine.exceptions.*;\n\n" +
         "public class Main${anchor_1} {\n" +
         "\t@SuppressWarnings(\"unchecked\")\n" +
         "\tpublic static void main(String[] args) throws MainException {\n\n" +
