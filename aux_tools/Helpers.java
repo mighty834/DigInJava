@@ -93,7 +93,12 @@ public class Helpers {
      * This method help us create template for new excercise,
      * and then we can start practice some java topics
      */
-    public static void createNewEx(String name) throws IOException {
+    public static void createNewEx(String name) throws IOException, DoubleMainClassException {
+		String className = Loader.EX_ENTRY_POINT_PREFIX + name;
+		if (Loader.getAllMainClassesNames().contains(className)) {
+			throw new DoubleMainClassException(className);
+		}
+
         int exNumber = 1;
         String path = "exercises/ex_";
         File exDir, mainClassFile, taskFile;
@@ -105,7 +110,7 @@ public class Helpers {
             } while (exDir.exists());
             exDir.mkdir();
 
-            mainClassFile = new File(exDir.getPath() + "/Main" + name + ".java");
+            mainClassFile = new File(exDir.getPath() + "/" + className + ".java");
             taskFile = new File(exDir.getPath() + "/task.md");
 
             stream = new BufferedWriter(new FileWriter(mainClassFile));
@@ -129,8 +134,7 @@ public class Helpers {
         }
     }
 
-    public static void main(String[] args)
-    throws IOException, WrongArguments, WrongCommand, MissingBuildPath, EmptyCommand {
+    public static void main(String[] args) throws MainException, IOException {
         if (args.length > 0) command = args[0];
         if (args.length > 1) arguments = Arrays.copyOfRange(args, 1, args.length);
 
