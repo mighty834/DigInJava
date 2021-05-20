@@ -31,8 +31,8 @@ class ClassGenerator {
 	"public class Invoker {\n" +
 	"\tpublic static void main(String[] args) throws Exception {\n" +
 	"\t\tif (args.length < 1) throw new Exception(\"Bad arguments in Invoker\");\n\n" +
-	"\t\tint ex_num = Integer.parseInt(args[0]);\n\n" + 
-	"\t\tswitch (ex_num) {\n" +
+	"\t\tint exNum = Integer.parseInt(args[0]);\n\n" + 
+	"\t\tswitch (exNum) {\n" +
 	"%s" +
 	"\t\t}\n" +
 	"\t}\n" +
@@ -46,7 +46,7 @@ class ClassGenerator {
 
 	public static String INVOKER_DEFAULT_BLOCK_TEMPLATE =
 	"\t\t\tdefault : {\n" +
-	"\t\t\t\tOutput.println(\"No ex for your number: \" + ex_num, Output.RED_COLOR);\n" +
+	"\t\t\t\tOutput.println(\"No ex for your number: \" + exNum, Output.RED_COLOR);\n" +
 	"\t\t\t}\n";
 
 	private static void preparePackage() throws IOException {
