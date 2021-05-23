@@ -3,6 +3,11 @@ import aux_tools.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
+import java.io.RandomAccessFile;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.nio.channels.FileChannel;
+import java.nio.ByteBuffer;
 
 public class Loader {
 	public static final String PATH_TO_BUILD	 	 = "./classes/";
@@ -10,7 +15,8 @@ public class Loader {
 	public static final String EX_PREFIX         	 = "ex_";
 	public static final String EX_ENTRY_POINT_PREFIX = "Main"; 
 	public static final String JAVA_FILES_SUFFIX     = ".java";
-	
+	public static final String TASK_FILE_NAME        = "task.md";	
+
 	private String _path;
 
 	public Loader(String path) {
@@ -54,13 +60,37 @@ public class Loader {
 		return result;
 	}
 
-	public static ArrayList<File> getAllTopicsFiles() {
-		ArrayList<File> result = new ArrayList<File>();
+	public static ArrayList<File> getAllTaskFiles() {
+		ArrayList<File> result 		 = new ArrayList<File>();
+		ArrayList<File> exercisesDir = getAllFilesFromPath(PATH_TO_EXERCISES);
+		
+		for (File exDir : exercisesDir) {
+			File[] innerFiles = exDir.listFiles();
+			for (File innerFile : innerFiles) {
+				if (innerFile.getName().equals(TASK_FILE_NAME)) {
+					result.add(innerFile);
+				}	
+			}
+		}
+
 		return result;
 	}
 
-	public static void main(String[] args) {
-		Output.println("This is Loader!");
+	public static String getFileContent(File file) throws FileNotFoundException, IOException {
+		String result 		   = "";
+		RandomAccessFile rFile = new RandomAccessFile(file, "r");
+		FileChannel channel    = rFile.getChannel();
+		ByteBuffer buffer      = ByteBuffer.allocate(512);
+
+		while (channel.read(buffer) > 0) {
+			buffer.flip();
+
+			while (buffer.hasRemaining()) {
+				result += (char)buffer.get();
+			}
+		}
+
+		return result;
 	}
 }
 

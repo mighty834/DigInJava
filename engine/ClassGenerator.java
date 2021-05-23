@@ -98,14 +98,16 @@ class ClassGenerator {
 		File[] exDirs  = exDirRoot.listFiles();
 
 		for (File exDir : exDirs) {
-			int exNum;
-			try {
-				exNum = Integer.parseInt(exDir.getName().substring(EX_DIR_PREFIX.length()));
-			} catch (NumberFormatException exception) {
-				throw new NumberFormatException("Problem in ClassGenerator: " + exception.getMessage());
-			}
+			if (exDir.getName().contains(EX_DIR_PREFIX)) {
+				int exNum;
+				try {
+					exNum = Integer.parseInt(exDir.getName().substring(EX_DIR_PREFIX.length()));
+				} catch (NumberFormatException exception) {
+					throw new NumberFormatException("Problem in ClassGenerator: " + exception.getMessage());
+				}
 
-			reflectData.put(exNum, getBaseFileName(getMainFile(exDir)));
+				reflectData.put(exNum, getBaseFileName(getMainFile(exDir)));
+			}
 		}
 
 		return reflectData;

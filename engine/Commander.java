@@ -4,6 +4,7 @@ import engine.auto_gen.*;
 import engine.exceptions.*;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.io.File;
 import exercises.*;
 import java.lang.reflect.Method;
@@ -11,7 +12,7 @@ import java.lang.reflect.Method;
 public class Commander {
 	public static final String BUILD_ASSETS  = "-ba";
 	public static final String CREATE_NEW_EX = "-cne";
-	public static final String SHOW_TOPICS   = "-st";
+	public static final String SHOW_DEFINED_TOPICS   = "-sdt";
 	public static final String EX_KEY    	 = "--";
 
 	public static void main(String[] args) throws Exception {
@@ -57,8 +58,9 @@ public class Commander {
 				}
 				break;
 
-				case SHOW_TOPICS : {
-					Output.println("Here will be list with all topics...", Output.GREEN_COLOR);	
+				case SHOW_DEFINED_TOPICS : {
+					HashSet<String> allDefinedTopics = new Informer().getAllDefinedTopics();
+					Output.printVerticalList(allDefinedTopics);
 				}
 				break;
 

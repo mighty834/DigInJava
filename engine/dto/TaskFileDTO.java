@@ -1,0 +1,50 @@
+package engine.dto;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class TaskFileDTO {
+	private String _description;
+	private ArrayList<String> _topics;
+	private boolean _isDone;
+
+	public TaskFileDTO() {
+		_topics 	 = new ArrayList<String>();
+		_description = "";
+		_isDone 	 = false;
+	}
+
+	public TaskFileDTO(String description, ArrayList<String> topics, boolean status) {
+		_description = description;
+		_topics      = topics;
+		_isDone 	 = status;
+	}
+
+	public String getDescription() {
+		return this._description;
+	}
+
+	public void setDescription(String value) {
+		this._description = value;
+	}
+
+	public ArrayList<String> getTopics() {
+		return _topics;
+	}
+
+	public void setTopics(ArrayList<String> value) {
+		_topics = value;
+	}
+
+	public void addTopic(String topic) {
+		_topics.add(topic);
+	}
+
+	public boolean getDoneStatus() {
+		return _isDone;
+	}
+
+	public void setDoneStatus(boolean value) {
+		_isDone = value;
+	}
+}
+

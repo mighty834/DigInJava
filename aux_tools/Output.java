@@ -3,14 +3,16 @@ import engine.exceptions.*;
 import java.util.*;
 
 public class Output {
-	public static final int MAX_LINE_SIZE 	   = 200;
-	public static final String DELIMITER  	   = " | ";
-	public static final String LINE_BEGIN 	   = "<";
-	public static final String LINE_BREAK 	   = "...\n";
-    public static final String STR_BREAK  	   = "...";
-    public static final String EMPTY_CELL      = "EMPTY";
-	public static final String LINE_END   	   = ">\n";
-	public static final String TABLE_TITLE_ROW = "=";
+	public static final int MAX_LINE_SIZE 	   	  = 200;
+	public static final String DELIMITER  	   	  = " | ";
+	public static final String LINE_BEGIN 	   	  = "<";
+	public static final String LINE_BREAK 	   	  = "...\n";
+    public static final String STR_BREAK  	   	  = "...";
+    public static final String EMPTY_CELL      	  = "EMPTY";
+	public static final String LINE_END   	   	  = ">\n";
+	public static final String TABLE_TITLE_ROW 	  = "=";
+	public static final String V_LIST_LINE_PREFIX = "> ";
+	public static final String V_LIST_LINE_END    = "\n";
 
 	public static final String RESET_COLOR  = "";
 	public static final String BLACK_COLOR  = "black";
@@ -192,6 +194,30 @@ public class Output {
 
 	public static String printList(Object[] data) {
 		return printList(convertArrayToList(data));
+	}
+
+	public static String printList(HashSet<Object> data) {
+		ArrayList<Object> list = new ArrayList<Object>();
+		list.addAll(data);
+		return printList(list);
+	}
+
+	public static String printVerticalList(ArrayList<String> list) {
+		String result = "";
+
+		for (String value : list) {
+			result += V_LIST_LINE_PREFIX + value + V_LIST_LINE_END;
+		}
+		result += "\n";
+
+		print(result);
+		return result;
+	}
+
+	public static String printVerticalList(HashSet<String> list) {
+		ArrayList<String> arrayList = new ArrayList<String>();
+		arrayList.addAll(list);
+		return printVerticalList(arrayList);
 	}
 
 	public static String genTable(ArrayList<Object> list, String title, int width, int cellSize) {
