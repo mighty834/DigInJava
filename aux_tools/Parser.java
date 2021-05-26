@@ -48,6 +48,7 @@ public class Parser {
 		result.setDescription(getDescriptionFromTaskContent(content));		
 		result.setTopics(getTopicsFromTaskContent(content));		
 		result.setDoneStatus(getStatusFromTaskContent(content));
+		result.setExNum(Loader.getExNumByFile(taskMd));
 
 		return result;
 	}

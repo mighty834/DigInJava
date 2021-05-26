@@ -27,5 +27,17 @@ public class Informer {
 
 		return result;
 	}
+
+	public HashSet<String> getAllExNumsByTopic(String topic) {
+		HashSet<String> result = new HashSet<String>();
+
+		for (TaskFileDTO data : _allTaskFilesData) {
+			if (data.getTopics().contains(topic)) {
+				result.add(data.getExNum() + "");
+			}
+		}
+
+		return result;	
+	}
 }
 

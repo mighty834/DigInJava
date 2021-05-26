@@ -6,14 +6,21 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import exercises.*;
 import java.lang.reflect.Method;
 
 public class Commander {
-	public static final String BUILD_ASSETS  = "-ba";
-	public static final String CREATE_NEW_EX = "-cne";
+	//Main keys
+	public static final String BUILD_ASSETS  		 = "-ba";
+	public static final String CREATE_NEW_EX 		 = "-cne";
 	public static final String SHOW_DEFINED_TOPICS   = "-sdt";
-	public static final String EX_KEY    	 = "--";
+	public static final String FIND_EXERCISES 		 = "-fe";
+	public static final String EX_KEY    	 		 = "--";
+
+	//Additional keys
+	public static final String FIND_EX_BY_TOPIC		 = "-t";
 
 	public static void main(String[] args) throws Exception {
 		String command = "";
@@ -64,10 +71,40 @@ public class Commander {
 				}
 				break;
 
+				case FIND_EXERCISES : findExercises(arguments);
+				break;
+
 				case "" : throw new EmptyCommand();
 				default : throw new WrongCommand(command);
 			}
 		}
+	}
+
+	private static void findExercises(String[] args)
+	throws WrongArguments, FileNotFoundException, IOException {
+		if (args == null) throw new WrongArguments(FIND_EXERCISES);
+		String keyForFind = "";
+		String value	  = args[0];		
+
+		try {
+			keyForFind = args[1];
+		} catch (IndexOutOfBoundsException exception) {
+			keyForFind = FIND_EX_BY_TOPIC;
+		}		
+
+		HashSet<String> allFoundExNums;
+		switch (keyForFind) {
+			case FIND_EX_BY_TOPIC : {
+				allFoundExNums = new Informer().getAllExNumsByTopic(value);
+			}
+			break;
+
+			default : {
+				allFoundExNums = new HashSet<String>();
+			}
+		}
+
+		Output.printVerticalList(allFoundExNums);
 	}
 }
 

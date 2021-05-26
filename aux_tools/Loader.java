@@ -92,5 +92,27 @@ public class Loader {
 
 		return result;
 	}
+	
+	public static int getExNumByFile(File file) throws FileNotFoundException, IOException {
+		String path = file.getPath();
+
+		if (path.contains(EX_PREFIX)) {
+			String subPath = path.substring(path.indexOf(EX_PREFIX) + EX_PREFIX.length());
+
+			int numEndIndex = 0;
+			for (int i = 0; i < subPath.length(); i++) {
+				try {
+					Integer.parseInt((String)subPath.substring(numEndIndex, numEndIndex + 1));
+					numEndIndex++;
+				} catch (NumberFormatException exception) {
+					break;
+				}
+			}
+
+			return (numEndIndex > 0) ? Integer.parseInt(subPath.substring(0, numEndIndex)) : 0;
+		} else {
+			return 0;
+		}
+	}
 }
 
