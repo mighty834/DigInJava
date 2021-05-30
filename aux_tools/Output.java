@@ -220,6 +220,27 @@ public class Output {
 		return printVerticalList(arrayList);
 	}
 
+	public static String printVerticalList(HashMap<String, HashSet<String>> data) {
+		ArrayList<String> list = new ArrayList<String>();
+		data.forEach((key, values) -> {
+			ArrayList<String> listValues = new ArrayList<String>();
+			listValues.addAll(values);
+
+			String row = key + DELIMITER;
+			for (int i = 0; i < listValues.size(); i++) {
+				if (i == listValues.size() - 1) {
+					row += listValues.get(i) + " ";
+				} else {
+					row += listValues.get(i) + ", ";
+				}
+			}
+			
+			list.add(row);
+		});
+
+		return printVerticalList(list);
+	}
+
 	public static String genTable(ArrayList<Object> list, String title, int width, int cellSize) {
 		ArrayList<String> data = convertDataToStr(list);
 		String result = "";

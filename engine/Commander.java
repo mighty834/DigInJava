@@ -5,6 +5,7 @@ import engine.exceptions.*;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,6 +22,51 @@ public class Commander {
 
 	//Additional keys
 	public static final String FIND_EX_BY_TOPIC		 = "-t";
+	public static final String DETAIL_KEY			 = "-d";
+
+	private static void showDefinedTopics(String[] args)
+	throws FileNotFoundException, IOException {
+		if (args.length > 0) {
+			if (Arrays.asList(args).contains(DETAIL_KEY)) {
+				HashMap<String, HashSet<String>> allDefinedTopicsDetail = new Informer().getAllDefinedTopicsDetail();
+				Output.printVerticalList(allDefinedTopicsDetail);
+			} else {
+				HashSet<String> allDefinedTopics = new Informer().getAllDefinedTopics();
+				Output.printVerticalList(allDefinedTopics);
+			}		
+
+		} else {
+			HashSet<String> allDefinedTopics = new Informer().getAllDefinedTopics();
+			Output.printVerticalList(allDefinedTopics);
+		}
+	}
+
+	private static void findExercises(String[] args)
+	throws WrongArguments, FileNotFoundException, IOException {
+		if (args == null) throw new WrongArguments(FIND_EXERCISES);
+		String keyForFind = "";
+		String value	  = args[0];		
+
+		try {
+			keyForFind = args[1];
+		} catch (IndexOutOfBoundsException exception) {
+			keyForFind = FIND_EX_BY_TOPIC;
+		}		
+
+		HashSet<String> allFoundExNums;
+		switch (keyForFind) {
+			case FIND_EX_BY_TOPIC : {
+				allFoundExNums = new Informer().getAllExNumsByTopic(value);
+			}
+			break;
+
+			default : {
+				allFoundExNums = new HashSet<String>();
+			}
+		}
+
+		Output.printVerticalList(allFoundExNums);
+	}
 
 	public static void main(String[] args) throws Exception {
 		String command = "";
@@ -65,10 +111,7 @@ public class Commander {
 				}
 				break;
 
-				case SHOW_DEFINED_TOPICS : {
-					HashSet<String> allDefinedTopics = new Informer().getAllDefinedTopics();
-					Output.printVerticalList(allDefinedTopics);
-				}
+				case SHOW_DEFINED_TOPICS : showDefinedTopics(arguments);
 				break;
 
 				case FIND_EXERCISES : findExercises(arguments);
@@ -78,33 +121,6 @@ public class Commander {
 				default : throw new WrongCommand(command);
 			}
 		}
-	}
-
-	private static void findExercises(String[] args)
-	throws WrongArguments, FileNotFoundException, IOException {
-		if (args == null) throw new WrongArguments(FIND_EXERCISES);
-		String keyForFind = "";
-		String value	  = args[0];		
-
-		try {
-			keyForFind = args[1];
-		} catch (IndexOutOfBoundsException exception) {
-			keyForFind = FIND_EX_BY_TOPIC;
-		}		
-
-		HashSet<String> allFoundExNums;
-		switch (keyForFind) {
-			case FIND_EX_BY_TOPIC : {
-				allFoundExNums = new Informer().getAllExNumsByTopic(value);
-			}
-			break;
-
-			default : {
-				allFoundExNums = new HashSet<String>();
-			}
-		}
-
-		Output.printVerticalList(allFoundExNums);
 	}
 }
 

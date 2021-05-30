@@ -4,6 +4,7 @@ import engine.exceptions.*;
 import engine.dto.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -38,6 +39,16 @@ public class Informer {
 		}
 
 		return result;	
+	}
+
+	public HashMap<String, HashSet<String>> getAllDefinedTopicsDetail() {
+		HashMap<String, HashSet<String>> result = new HashMap<String, HashSet<String>>();
+
+		for (String topic : getAllDefinedTopics()) {
+			result.put(topic, getAllExNumsByTopic(topic));
+		}
+
+		return result;
 	}
 }
 
