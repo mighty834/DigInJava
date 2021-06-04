@@ -37,7 +37,7 @@ public class Helpers {
      * This method help collect all assets in every exercise,
      * and put them into build directory
      */
-    public static void buildAssets(String assetsPath, boolean isAssets) {
+    private static void buildAssets(String assetsPath, boolean isAssets) {
         File currentDir = new File(assetsPath);
         File[] list = currentDir.listFiles();
 

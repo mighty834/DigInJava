@@ -8,6 +8,7 @@ function preCompile {
 
 function compile {
 	javac -classpath . -d $resultDir ./**/*.java
+	java  -classpath $resultDir engine.Commander -ba $resultDir > /dev/null
 }
 
 function run {
