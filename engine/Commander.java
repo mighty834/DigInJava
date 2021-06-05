@@ -23,6 +23,8 @@ public class Commander {
 		SHOW_DEFINED_TOPICS,
 		SHOW_DEFINED_TOPICS_DETAIL,
 		FIND_EXERCISES_BY_TOPIC,
+		FIND_EXERCISES_BY_DONE,
+		FIND_EXERCISES_BY_UNDONE,
 		EXERCISE_RUN
 	}
 
@@ -67,6 +69,16 @@ public class Commander {
 		Output.printVerticalList(allFoundExNums);
 	}
 
+	private static void findExercisesByDone() throws FileNotFoundException, IOException {
+		HashSet<String> allFoundExNums = new Informer().getAllExNumsByStatus(true);
+		Output.printVerticalList(allFoundExNums);
+	}
+
+	private static void findExercisesByUndone() throws FileNotFoundException, IOException {
+		HashSet<String> allFoundExNums = new Informer().getAllExNumsByStatus(false);
+		Output.printVerticalList(allFoundExNums);
+	}
+
 	public static void main(String[] args) throws Exception {
 		Commands command = KeyKeeper.getCommand(args);
 
@@ -87,6 +99,12 @@ public class Commander {
 			break;
 
 			case FIND_EXERCISES_BY_TOPIC : findExercisesByTopic(args[1]);
+			break;
+
+			case FIND_EXERCISES_BY_DONE : findExercisesByDone();
+			break;
+
+			case FIND_EXERCISES_BY_UNDONE : findExercisesByUndone();
 			break;
 
 			default : throw new WrongCommand(command.toString());

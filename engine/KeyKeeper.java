@@ -3,6 +3,7 @@ import engine.exceptions.*;
 import engine.Commander.Commands;
 import aux_tools.*;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 class KeyKeeper {
 	//Main keys
@@ -13,8 +14,10 @@ class KeyKeeper {
     public static final String EX_KEY                = "--";
 
     //Additional keys
-    public static final String FIND_EX_BY_TOPIC      = "-t";
-    public static final String DETAIL_KEY            = "-d";
+    public static final String FIND_EX_BY_TOPIC  = "-t";
+	public static final String FIND_EX_BY_DONE 	 = "-d";
+	public static final String FIND_EX_BY_UNDONE = "-u";
+    public static final String DETAIL_KEY        = "-d";
 
 	private static Commands defineShowDefinedTopics(String[] keys) {
 		return (Arrays.asList(keys).contains(DETAIL_KEY)) ?
@@ -23,7 +26,18 @@ class KeyKeeper {
 	}
 
 	private static Commands defineFindExercises(String[] keys) {
-		return Commands.FIND_EXERCISES_BY_TOPIC;
+		ArrayList<String> keysList = new ArrayList<String>();
+		keysList.addAll(Arrays.asList(keys));
+	
+		if (keysList.contains(FIND_EX_BY_TOPIC) || keys.length == 0) {
+			return Commands.FIND_EXERCISES_BY_TOPIC;
+		}
+		if (keysList.contains(FIND_EX_BY_UNDONE)) {
+			return Commands.FIND_EXERCISES_BY_UNDONE;
+		}
+		else {
+			return Commands.FIND_EXERCISES_BY_DONE;
+		}
 	}
 
 	public static Commander.Commands getCommand(String[] keys) throws MainException {

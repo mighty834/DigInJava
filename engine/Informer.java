@@ -41,6 +41,18 @@ public class Informer {
 		return result;	
 	}
 
+	public HashSet<String> getAllExNumsByStatus(boolean neededStatus) {
+		HashSet<String> result = new HashSet<String>();
+
+		for (TaskFileDTO data : _allTaskFilesData) {
+			if (data.getDoneStatus() == neededStatus) {
+				result.add(data.getExNum() + "");
+			}
+		}
+
+		return result;
+	}
+
 	public HashMap<String, HashSet<String>> getAllDefinedTopicsDetail() {
 		HashMap<String, HashSet<String>> result = new HashMap<String, HashSet<String>>();
 
