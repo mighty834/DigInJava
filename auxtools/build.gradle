@@ -1,0 +1,3 @@
+plugins {
+    id 'diginjava.java-library-conventions'
+}
