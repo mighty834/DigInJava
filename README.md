@@ -57,7 +57,7 @@ everything working good.
 ### All possible commands and args for run script
 
 `run [number]` - execute last executable module of with given number  
-`run cne {name} [type]` - create new executable module with
+`run cne {mcn} [type] [kw] [env] [dep] [desc]` - create new executable module with
 given main class name, and with default or given type  
 `run de {number}` - delete executable module with given number  
 `run up {dependency name}` - up container with external dependency  
