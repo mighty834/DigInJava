@@ -2,4 +2,4 @@ plugins {
     id 'java'
 }
 
-tasks.register("cne", CreateNewExecution)
+tasks.register("cne", tasks.CreateNewExecution)
