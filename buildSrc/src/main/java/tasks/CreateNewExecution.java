@@ -7,9 +7,9 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import common.Parser;
 
 public class CreateNewExecution extends DefaultTask {
     private String _mainClassName;
@@ -18,6 +18,23 @@ public class CreateNewExecution extends DefaultTask {
     private List<enums.EnvTypes> _environment          = new ArrayList<>();
     private List<enums.DependenciesType> _dependencies = new ArrayList<>();
     private String _description;
+
+    private Integer getNumberForNewExecution() {
+        List<Integer> exNums = Parser.parseExecutionNumbers();
+        exNums.sort((a, b) -> a - b);
+
+        if (exNums.get(0) > 1) {
+            return 1;
+        }
+
+        for (int i = 0; i < exNums.size() - 1; i++) {
+            if (exNums.get(i) + 1 < exNums.get(i + 1)) {
+                return exNums.get(i) + 1;
+            }
+        }
+
+        return exNums.get(exNums.size() - 1) + 1;
+    }
 
     @Option(option = "mcn", description = "Name of the execution main class")
     public void setMainClassName(String mainClassName) {
@@ -31,11 +48,7 @@ public class CreateNewExecution extends DefaultTask {
 
     @Option(option = "kw", description = "This is key topics included to execution")
     public void setKeyWords(String keyWords) {
-        _keyWords.addAll(
-            Arrays.stream(
-                keyWords.split(",")
-            ).map(word -> word.trim()).toList()
-        );
+        Parser.parseCLIProps(_keyWords, keyWords, prop -> prop);
     }
 
     @Optional
@@ -57,15 +70,9 @@ public class CreateNewExecution extends DefaultTask {
 
     @Option(option = "env", description = "Required environment for execution")
     public void setEnvironment(String environment) {
-        _environment.addAll(
-          Arrays.stream(
-              environment.split(",")
-          ).map(word -> {
-              return EnvTypes.valueOf(
-                  word.trim().toUpperCase()
-              );
-          }).toList()
-        );
+        Parser.parseCLIProps(_environment, environment, (String prop) -> {
+            return EnvTypes.valueOf(prop.toUpperCase());
+        });
     }
 
     @Optional
@@ -76,15 +83,9 @@ public class CreateNewExecution extends DefaultTask {
 
     @Option(option = "dep", description = "Required dependencies for execution")
     public void setDependencies(String dependencies) {
-        _dependencies.addAll(
-            Arrays.stream(
-                dependencies.split(",")
-            ).map(word -> {
-                return DependenciesType.valueOf(
-                    word.trim().toUpperCase()
-                );
-            }).toList()
-        );
+        Parser.parseCLIProps(_dependencies, dependencies, (String prop) -> {
+            return DependenciesType.valueOf(prop.toUpperCase());
+        });
     }
 
     @Optional
@@ -105,9 +106,7 @@ public class CreateNewExecution extends DefaultTask {
     }
 
     @TaskAction
-    public void createNewEx() {
-        System.out.println(
-            String.format("Name of dependencies type for new execution: %s", _dependencies)
-        );
+    public void createNewEx() throws Exception {
+        //Will be logic for new execution creation...
     }
 }
