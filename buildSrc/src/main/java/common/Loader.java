@@ -1,30 +1,24 @@
 package common;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import files.Settings;
+import org.gradle.api.Project;
 
 public class Loader {
-    public static final String SETTINGS_GRADLE = "settings.gradle";
+    private static Loader INSTANCE;
+    private Project _project;
 
-    public static String loadSettingsGradle() {
-        String result = "";
-        try (
-            Scanner reader = new Scanner(new File(SETTINGS_GRADLE))
-        ) {
-            while (reader.hasNextLine()) {
-                result += reader.nextLine() + "\n";
-            }
+    private Loader(Project project) {
+        _project = project;
+    }
 
-        } catch (FileNotFoundException exception) {
-            System.out.println(
-                String.format("No gradle settings file in project: %s", exception.getMessage())
-            );
-        } catch (Exception exception) {
-            System.out.println(
-                String.format("Something going wrong in gradle settings loader: %s", exception.getMessage())
-            );
+    public static Loader getInstance(Project project) {
+        if (INSTANCE == null) {
+            INSTANCE = new Loader(project);
         }
 
-        return result;
+        return INSTANCE;
+    }
+
+    public String loadSettingsGradle() {
+        return Settings.getInstance(_project).getContent();
     }
 }

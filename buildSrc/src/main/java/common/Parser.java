@@ -5,12 +5,27 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.gradle.api.Project;
 
 public class Parser {
-    public static final String SPLITERATOR = ",";
-    public static final String EXECUTIONS_FIND_REG_EXP = "ex_[0-9]+";
+    private static Parser INSTANCE;
+    private final String SPLITERATOR = ",";
+    private final String EXECUTIONS_FIND_REG_EXP = "ex_[0-9]+";
+    private Project _project;
 
-    public static <T> void parseCLIProps(List<T> target, String props, Function<String, T> func) {
+    private Parser(Project project) {
+        _project = project;
+    }
+
+    public static Parser getInstance(Project project) {
+        if (INSTANCE == null) {
+            INSTANCE = new Parser(project);
+        }
+
+        return INSTANCE;
+    }
+
+    public <T> void parseCLIProps(List<T> target, String props, Function<String, T> func) {
         target.addAll(
             Arrays.stream(
                 props.split(SPLITERATOR)
@@ -20,7 +35,7 @@ public class Parser {
         );
     }
 
-    private static List<String> getAllSubstringsByRegExp(String data, String regExp) {
+    private List<String> getAllSubstringsByRegExp(String data, String regExp) {
         List<String> result = new ArrayList<>();
         Pattern pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(data);
@@ -32,9 +47,9 @@ public class Parser {
         return result;
     }
 
-    public static List<Integer> parseExecutionNumbers() {
+    public List<Integer> parseExecutionNumbers() {
         List<Integer> result = new ArrayList<>();
-        String data = Loader.loadSettingsGradle();
+        String data = Loader.getInstance(_project).loadSettingsGradle();
         getAllSubstringsByRegExp(data, EXECUTIONS_FIND_REG_EXP).forEach((String exModuleName) -> {
             result.add(Integer.parseInt(exModuleName.substring(3)));
         });

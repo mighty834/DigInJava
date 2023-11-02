@@ -10,6 +10,7 @@ import org.gradle.api.tasks.options.Option;
 import java.util.List;
 import java.util.ArrayList;
 import common.Parser;
+import files.Settings;
 
 public class CreateNewExecution extends DefaultTask {
     private String _mainClassName;
@@ -18,9 +19,10 @@ public class CreateNewExecution extends DefaultTask {
     private List<enums.EnvTypes> _environment          = new ArrayList<>();
     private List<enums.DependenciesType> _dependencies = new ArrayList<>();
     private String _description;
+    private String _executionModulePrefix = "executions:ex_";
 
     private Integer getNumberForNewExecution() {
-        List<Integer> exNums = Parser.parseExecutionNumbers();
+        List<Integer> exNums = Parser.getInstance(this.getProject()).parseExecutionNumbers();
         exNums.sort((a, b) -> a - b);
 
         if (exNums.get(0) > 1) {
@@ -36,6 +38,13 @@ public class CreateNewExecution extends DefaultTask {
         return exNums.get(exNums.size() - 1) + 1;
     }
 
+    private void addToSettingsGradle() {
+        Settings.getInstance(this.getProject()).addModule(String.format(
+            _executionModulePrefix + "%d",
+            getNumberForNewExecution()
+        ));
+    }
+
     @Option(option = "mcn", description = "Name of the execution main class")
     public void setMainClassName(String mainClassName) {
         _mainClassName = mainClassName;
@@ -48,7 +57,7 @@ public class CreateNewExecution extends DefaultTask {
 
     @Option(option = "kw", description = "This is key topics included to execution")
     public void setKeyWords(String keyWords) {
-        Parser.parseCLIProps(_keyWords, keyWords, prop -> prop);
+        Parser.getInstance(this.getProject()).parseCLIProps(_keyWords, keyWords, prop -> prop);
     }
 
     @Optional
@@ -70,7 +79,7 @@ public class CreateNewExecution extends DefaultTask {
 
     @Option(option = "env", description = "Required environment for execution")
     public void setEnvironment(String environment) {
-        Parser.parseCLIProps(_environment, environment, (String prop) -> {
+        Parser.getInstance(this.getProject()).parseCLIProps(_environment, environment, (String prop) -> {
             return EnvTypes.valueOf(prop.toUpperCase());
         });
     }
@@ -83,7 +92,7 @@ public class CreateNewExecution extends DefaultTask {
 
     @Option(option = "dep", description = "Required dependencies for execution")
     public void setDependencies(String dependencies) {
-        Parser.parseCLIProps(_dependencies, dependencies, (String prop) -> {
+        Parser.getInstance(this.getProject()).parseCLIProps(_dependencies, dependencies, (String prop) -> {
             return DependenciesType.valueOf(prop.toUpperCase());
         });
     }
@@ -107,6 +116,6 @@ public class CreateNewExecution extends DefaultTask {
 
     @TaskAction
     public void createNewEx() throws Exception {
-        //Will be logic for new execution creation...
+        addToSettingsGradle();
     }
 }
