@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
+import common.Logger;
 
 /**
  * This class is for interaction with settings.gradle file
@@ -34,18 +35,6 @@ public class Settings {
         return result;
     }
 
-    private void logFileNotFoundProblem(String errorMessage) {
-        System.out.println(
-            String.format("No gradle settings file in project: %s", errorMessage)
-        );
-    }
-
-    private void logIOExceptionProblem(String errorMessage) {
-        System.out.println(
-            String.format("Con't write to this file: %s", errorMessage)
-        );
-    }
-
     public static Settings getInstance(Project project) {
         if (INSTANCE == null) {
             INSTANCE = new Settings(project);
@@ -63,7 +52,7 @@ public class Settings {
                 result += reader.nextLine() + "\n";
             }
         } catch (FileNotFoundException exception) {
-            logFileNotFoundProblem(exception.getMessage());
+            Logger.logFileNotFoundProblem(exception.getMessage());
         }
 
         return result;
@@ -77,7 +66,7 @@ public class Settings {
         ) {
             writer.write(content);
         } catch (IOException exception) {
-            logIOExceptionProblem(exception.getMessage());
+            Logger.logIOExceptionProblem(exception.getMessage());
         }
     }
 
@@ -90,7 +79,7 @@ public class Settings {
                 result.add(reader.nextLine());
             }
         } catch (FileNotFoundException exception) {
-            logFileNotFoundProblem(exception.getMessage());
+            Logger.logFileNotFoundProblem(exception.getMessage());
         }
 
         return result;

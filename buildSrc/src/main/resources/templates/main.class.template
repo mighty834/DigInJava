@@ -1,0 +1,8 @@
+package DigInJava.executions.ex_%d;
+import diginjava.auxtools.*;
+
+public class %s {
+    public static void main(String[] args) {
+        Output.println("Hello new module!", Output.GREEN_COLOR);
+    }
+}

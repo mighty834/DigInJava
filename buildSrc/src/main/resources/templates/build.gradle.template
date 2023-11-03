@@ -1,0 +1,19 @@
+plugins {
+    id 'diginjava.java-application-conventions'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":auxtools")
+}
+
+application {
+    mainClass = "DigInJava.executions.ex_%d.%s"
+}
+
+tasks.register("%d") {
+    dependsOn run
+}
