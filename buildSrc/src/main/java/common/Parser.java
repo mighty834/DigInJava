@@ -6,11 +6,14 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.gradle.api.Project;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Parser {
     private static Parser INSTANCE;
     private final String SPLITERATOR = ",";
     private final String EXECUTIONS_FIND_REG_EXP = "ex_[0-9]+";
+    private final String DATE_PATTERN = "dd.MM.yyyy|HH:mm:ss";
     private Project _project;
 
     private Parser(Project project) {
@@ -55,5 +58,10 @@ public class Parser {
         });
 
         return result;
+    }
+
+    public String getDateValue(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN);
+        return formatter.format(date);
     }
 }

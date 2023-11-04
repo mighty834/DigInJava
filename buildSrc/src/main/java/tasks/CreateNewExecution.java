@@ -122,7 +122,15 @@ public class CreateNewExecution extends DefaultTask {
         int newExNumber = getNumberForNewExecution();
 
         addToSettingsGradle(newExNumber);
-        ExModule.getInstance(this.getProject()).create(_mainClassName, newExNumber);
+        ExModule module = new ExModule(
+            this.getProject(),
+            _mainClassName,
+            newExNumber,
+            _keyWords,
+            _type,
+            _description
+        );
+        module.create();
         Logger.logSuccessful(
             String.format(SUCCESSFUL_MESSAGE, newExNumber)
         );
