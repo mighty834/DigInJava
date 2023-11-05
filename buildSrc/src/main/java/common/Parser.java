@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.gradle.api.Project;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class Parser {
     private static Parser INSTANCE;
@@ -63,5 +64,17 @@ public class Parser {
     public String getDateValue(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN);
         return formatter.format(date);
+    }
+
+    public Date getOriginDate(String value) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN);
+        Date result = null;
+        try {
+            result = formatter.parse(value);
+        } catch (ParseException exception) {
+            Logger.logParseExceptionProblem(exception.getMessage());
+        }
+
+        return result;
     }
 }

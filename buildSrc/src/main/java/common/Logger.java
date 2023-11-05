@@ -13,6 +13,12 @@ public class Logger {
         );
     }
 
+    public static void logParseExceptionProblem(String errorMessage) {
+        System.out.println(
+            String.format("Can't parse this string to Java object: %s", errorMessage)
+        );
+    }
+
     public static void logSuccessful(String message) {
         System.out.println(message);
     }

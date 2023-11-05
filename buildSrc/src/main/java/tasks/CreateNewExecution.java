@@ -1,23 +1,23 @@
 package tasks;
 import enums.DependenciesType;
 import enums.EnvTypes;
-import enums.ExecutionTypes;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import common.Parser;
 import common.Logger;
 import files.Settings;
-import files.ExModule;
+import files.exModules.*;
 
 public class CreateNewExecution extends DefaultTask {
     private String _mainClassName;
     private List<String> _keyWords                     = new ArrayList<>();
-    private enums.ExecutionTypes _type                 = enums.ExecutionTypes.DEFAULT;
+    private AbstractExModule _type                     = new DefaultExModule();
     private List<enums.EnvTypes> _environment          = new ArrayList<>();
     private List<enums.DependenciesType> _dependencies = new ArrayList<>();
     private String _description;
@@ -71,7 +71,14 @@ public class CreateNewExecution extends DefaultTask {
 
     @Option(option = "type", description = "Type of initial execution file structure")
     public void setType(String type) {
-        _type = ExecutionTypes.valueOf(type.toUpperCase());
+        switch (type.toUpperCase()) {
+            case "DEFAULT": {
+                _type = new DefaultExModule();
+            }
+            break;
+
+            default : {}
+        }
     }
 
     @Optional
@@ -122,15 +129,15 @@ public class CreateNewExecution extends DefaultTask {
         int newExNumber = getNumberForNewExecution();
 
         addToSettingsGradle(newExNumber);
-        ExModule module = new ExModule(
+        _type.init(
             this.getProject(),
             _mainClassName,
             newExNumber,
             _keyWords,
-            _type,
-            _description
-        );
-        module.create();
+            _description,
+            new Date()
+        ).create();
+
         Logger.logSuccessful(
             String.format(SUCCESSFUL_MESSAGE, newExNumber)
         );
