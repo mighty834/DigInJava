@@ -1,3 +1,6 @@
+# Ignore main settings.gradle file
+/settings.gradle
+
 # Ignore Gradle project-specific cache directory
 .gradle
 

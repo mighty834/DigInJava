@@ -1,5 +1,0 @@
-rootProject.name = 'DigInJava'
-include(
-    'executions',
-    'auxtools'
-)
