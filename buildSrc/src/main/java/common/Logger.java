@@ -19,6 +19,12 @@ public class Logger {
         );
     }
 
+    public static void logModuleFindExceptionProblem(int moduleNumber) {
+        System.out.println(
+            String.format("Module with number %d not exist", moduleNumber)
+        );
+    }
+
     public static void logSuccessful(String message) {
         System.out.println(message);
     }

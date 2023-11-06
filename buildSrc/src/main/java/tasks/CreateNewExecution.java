@@ -13,6 +13,7 @@ import common.Parser;
 import common.Logger;
 import files.Settings;
 import files.exModules.*;
+import files.ExModuleCollector;
 
 public class CreateNewExecution extends DefaultTask {
     private String _mainClassName;
@@ -28,7 +29,7 @@ public class CreateNewExecution extends DefaultTask {
         List<Integer> exNums = Parser.getInstance(this.getProject()).parseExecutionNumbers();
         exNums.sort((a, b) -> a - b);
 
-        if (exNums.get(0) > 1) {
+        if (exNums.size() == 0 || exNums.get(0) > 1) {
             return 1;
         }
 
@@ -126,20 +127,21 @@ public class CreateNewExecution extends DefaultTask {
 
     @TaskAction
     public void createNewEx() throws Exception {
-        int newExNumber = getNumberForNewExecution();
-
-        addToSettingsGradle(newExNumber);
-        _type.init(
-            this.getProject(),
-            _mainClassName,
-            newExNumber,
-            _keyWords,
-            _description,
-            new Date()
-        ).create();
-
-        Logger.logSuccessful(
-            String.format(SUCCESSFUL_MESSAGE, newExNumber)
-        );
+//        int newExNumber = getNumberForNewExecution();
+//
+//        addToSettingsGradle(newExNumber);
+//        _type.init(
+//            this.getProject(),
+//            _mainClassName,
+//            newExNumber,
+//            _keyWords,
+//            _description,
+//            new Date()
+//        ).create();
+//
+//        Logger.logSuccessful(
+//            String.format(SUCCESSFUL_MESSAGE, newExNumber)
+//        );
+        ExModuleCollector.getInstance(this.getProject()).collect().getModules();
     }
 }
