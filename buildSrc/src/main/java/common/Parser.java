@@ -12,10 +12,10 @@ import java.text.ParseException;
 
 public class Parser {
     private static Parser INSTANCE;
-    private final String SPLITERATOR = ",";
-    private final String EXECUTIONS_FIND_REG_EXP = "ex_[0-9]+";
-    private final String DATE_PATTERN = "dd.MM.yyyy|HH:mm:ss";
     private Project _project;
+    public static final String SPLITERATOR = ",";
+    public static final String EXECUTIONS_FIND_REG_EXP = "ex_[0-9]+";
+    public static final String DATE_PATTERN = "dd.MM.yyyy|HH:mm:ss";
 
     private Parser(Project project) {
         _project = project;
@@ -39,7 +39,7 @@ public class Parser {
         );
     }
 
-    private List<String> getAllSubstringsByRegExp(String data, String regExp) {
+    public static List<String> getAllSubstringsByRegExp(String data, String regExp) {
         List<String> result = new ArrayList<>();
         Pattern pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(data);
@@ -66,7 +66,7 @@ public class Parser {
         return formatter.format(date);
     }
 
-    public Date getOriginDate(String value) {
+    public static Date getOriginDate(String value) {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN);
         Date result = null;
         try {

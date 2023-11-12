@@ -13,7 +13,6 @@ import common.Parser;
 import common.Logger;
 import files.Settings;
 import files.exModules.*;
-import files.ExModuleCollector;
 
 public class CreateNewExecution extends DefaultTask {
     private String _mainClassName;
@@ -127,21 +126,20 @@ public class CreateNewExecution extends DefaultTask {
 
     @TaskAction
     public void createNewEx() throws Exception {
-//        int newExNumber = getNumberForNewExecution();
-//
-//        addToSettingsGradle(newExNumber);
-//        _type.init(
-//            this.getProject(),
-//            _mainClassName,
-//            newExNumber,
-//            _keyWords,
-//            _description,
-//            new Date()
-//        ).create();
-//
-//        Logger.logSuccessful(
-//            String.format(SUCCESSFUL_MESSAGE, newExNumber)
-//        );
-        ExModuleCollector.getInstance(this.getProject()).collect().getModules();
+        int newExNumber = getNumberForNewExecution();
+
+        addToSettingsGradle(newExNumber);
+        _type.init(
+            this.getProject(),
+            _mainClassName,
+            newExNumber,
+            _keyWords,
+            _description,
+            new Date()
+        ).create();
+
+        Logger.logSuccessful(
+            String.format(SUCCESSFUL_MESSAGE, newExNumber)
+        );
     }
 }
