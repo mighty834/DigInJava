@@ -39,22 +39,16 @@ public class Parser {
         );
     }
 
-    public static List<String> getAllSubstringsByRegExp(String data, String regExp) {
-        List<String> result = new ArrayList<>();
-        Pattern pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(data);
-
-        while (matcher.find()) {
-            result.add(matcher.group(0));
-        }
-
-        return result;
+    public static List<String> parseByRegex(String regex, String content) {
+        return Pattern.compile(regex, Pattern.CASE_INSENSITIVE).matcher(content).results().map(result -> {
+            return result.group();
+        }).toList();
     }
 
     public List<Integer> parseExecutionNumbers() {
         List<Integer> result = new ArrayList<>();
         String data = Loader.getInstance(_project).loadSettingsGradle();
-        getAllSubstringsByRegExp(data, EXECUTIONS_FIND_REG_EXP).forEach((String exModuleName) -> {
+        parseByRegex(EXECUTIONS_FIND_REG_EXP, data).forEach((String exModuleName) -> {
             result.add(Integer.parseInt(exModuleName.substring(3)));
         });
 

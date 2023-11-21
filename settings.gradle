@@ -1,5 +1,9 @@
 rootProject.name = 'DigInJava'
 include(
     'executions',
-    'auxtools'
+    'auxtools',
+    'executions:ex_1',
+    'executions:ex_2',
+    'executions:ex_3',
+    'executions:ex_4'
 )

@@ -32,7 +32,10 @@ public class ExModuleCollector {
         private File _moduleFile;
         private String INFO_FILE = "info.md";
         private String BUILD_GRADLE_FILE = "build.gradle";
-        private final String DATE_PATTERN_REGEXP = "[0-9]+.[0-9]+.[0-9]+[|][0-9]+:[0-9]+:[0-9]+";
+        private final String DATE_PATTERN_REGEX = "(\\d+\\.){2}\\d+\\|(\\d+:){2}\\d+";
+        private final String KEY_WORDS_PATTERN_REGEX =
+            "(?<=# Key words[\\s\\S]*)(?<=\\*\\s).*(?=[\\s\\S]*\\n\\n[\\s\\S]*# Description)";
+        private final String DESCRIPTION_PATTERN_REGEX = "(?<=# Description[\\s\\n]*)[\\s\\S]*";
 
         public ExModuleParser(File moduleFile) {
             _moduleFile = moduleFile;
@@ -62,8 +65,11 @@ public class ExModuleCollector {
             String content = Loader.loadFileContent(infoFile);
 
             result.date = Parser.getOriginDate(
-                Parser.getAllSubstringsByRegExp(content, DATE_PATTERN_REGEXP).stream().findFirst().get()
+                Parser.parseByRegex(DATE_PATTERN_REGEX, content).stream().findFirst().get()
             );
+
+            result.keyWords = Parser.parseByRegex(KEY_WORDS_PATTERN_REGEX, content);
+            result.description = Parser.parseByRegex(DESCRIPTION_PATTERN_REGEX, content).get(0);
 
             return result;
         }
