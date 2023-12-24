@@ -5,5 +5,13 @@ include(
     'executions:ex_1',
     'executions:ex_2',
     'executions:ex_3',
-    'executions:ex_4'
+    'executions:ex_4',
+    'executions:ex_5',
+    'executions:ex_6',
+    'executions:ex_7',
+    'executions:ex_8',
+    'executions:ex_9',
+    'executions:ex_10',
+    'executions:ex_11',
+    'executions:ex_12'
 )

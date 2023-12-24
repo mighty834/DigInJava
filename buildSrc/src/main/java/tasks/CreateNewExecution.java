@@ -125,7 +125,7 @@ public class CreateNewExecution extends DefaultTask {
     }
 
     @TaskAction
-    public void createNewEx() throws Exception {
+    public void createNewEx() {
         int newExNumber = getNumberForNewExecution();
 
         addToSettingsGradle(newExNumber);

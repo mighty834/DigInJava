@@ -5,11 +5,13 @@ import org.gradle.api.Project;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
+import java.util.Objects;
 import common.Parser;
 import common.Loader;
 
 public class ExModuleCollector {
     private static ExModuleCollector INSTANCE;
+    private static List<InfoFileDTO> InfoData;
     private Project _project;
     private List<File> _modules;
     private String EXECUTIONS_PATH = "../executions";
@@ -26,6 +28,23 @@ public class ExModuleCollector {
         }
 
         return INSTANCE;
+    }
+
+    public List<InfoFileDTO> getInfoData() {
+        if (Objects.isNull(InfoData)) {
+            initInfoData();
+        }
+
+        return InfoData;
+    }
+
+    private void initInfoData() {
+        InfoData = new ArrayList<>();
+
+        for (File module : _modules) {
+            ExModuleParser parser = new ExModuleParser(module);
+            InfoData.add(parser.getParsedInfoFile());
+        }
     }
 
     public class ExModuleParser {
@@ -59,7 +78,7 @@ public class ExModuleCollector {
             return null;
         }
 
-        public InfoFileDTO parseInfoFile() {
+        public InfoFileDTO getParsedInfoFile() {
             InfoFileDTO result = new InfoFileDTO();
             File infoFile  = getFile(_moduleFile, INFO_FILE);
             String content = Loader.loadFileContent(infoFile);
@@ -70,6 +89,7 @@ public class ExModuleCollector {
 
             result.keyWords = Parser.parseByRegex(KEY_WORDS_PATTERN_REGEX, content);
             result.description = Parser.parseByRegex(DESCRIPTION_PATTERN_REGEX, content).get(0);
+            result.exNumber = Integer.parseInt(_moduleFile.getName().substring(EXECUTION_MODULE_PREFIX.length()));
 
             return result;
         }

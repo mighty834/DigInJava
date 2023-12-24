@@ -1,5 +1,11 @@
+import common.Finder
+
 plugins {
     id 'java'
 }
 
 tasks.register("cne", tasks.CreateNewExecution)
+
+tasks.register("last") {
+    dependsOn "ex_${Finder.getInstance(project).findNumberOfLastEx()}:run"
+}
