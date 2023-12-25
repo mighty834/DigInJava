@@ -34,6 +34,7 @@ public class DefaultExModule extends AbstractExModule {
                 getTemplate(EX_MODULE_BUILD_GRADLE_TEMP),
                 _exModuleNumber,
                 _mainClassName,
+                _exModuleNumber,
                 _exModuleNumber
             ));
 

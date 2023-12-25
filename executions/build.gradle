@@ -1,4 +1,5 @@
 import common.Finder
+import java.util.Properties
 
 plugins {
     id 'java'
@@ -7,5 +8,32 @@ plugins {
 tasks.register("cne", tasks.CreateNewExecution)
 
 tasks.register("last") {
-    dependsOn "ex_${Finder.getInstance(project).findNumberOfLastEx()}:run"
+    var developerProps = new Properties()
+    developerProps.load(new FileReader(
+        file((String)project.getProperty("project.DeveloperPropsPath"))
+    ))
+
+    Integer lastExNumber
+    try {
+        lastExNumber = Integer.parseInt(
+            developerProps.getProperty("developer.lastExNumber")
+        )
+    } catch (NumberFormatException exception) {
+        lastExNumber = Finder.getInstance(project).findNumberOfLastEx()
+    }
+
+    dependsOn "ex_${lastExNumber}:run"
+}
+
+tasks.register("createDIJCache") {
+    var dijCacheDir = file("../.gradle/DIJ_cache")
+    var developerProps = file("../.gradle/DIJ_cache/developer.properties")
+
+    if (! dijCacheDir.exists()) {
+        dijCacheDir.mkdir()
+    }
+
+    if (! developerProps.exists()) {
+        developerProps.createNewFile()
+    }
 }

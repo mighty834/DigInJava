@@ -15,5 +15,11 @@ application {
 }
 
 tasks.register("%d") {
+    var developerProps = new Properties()
+    developerProps.setProperty("developer.lastExNumber", "%d")
+    developerProps.store(new FileWriter(
+        file("../" + (String)project.getProperty("project.DeveloperPropsPath"))
+    ), "DEVELOPER_PROPERTIES")
+
     dependsOn run
 }
