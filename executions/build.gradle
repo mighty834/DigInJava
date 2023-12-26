@@ -5,6 +5,21 @@ plugins {
     id 'java'
 }
 
+tasks.register("createDIJCache") {
+    var dijCacheDir = file("../.gradle/DIJ_cache")
+    var developerProps = file("../.gradle/DIJ_cache/developer.properties")
+
+    if (! dijCacheDir.exists()) {
+        dijCacheDir.mkdir()
+    }
+
+    if (! developerProps.exists()) {
+        developerProps.createNewFile()
+    }
+}
+
+tasks.matching { it != createDIJCache }.all { it.dependsOn createDIJCache }
+
 tasks.register("cne", tasks.CreateNewExecution)
 
 tasks.register("last") {
@@ -23,17 +38,4 @@ tasks.register("last") {
     }
 
     dependsOn "ex_${lastExNumber}:run"
-}
-
-tasks.register("createDIJCache") {
-    var dijCacheDir = file("../.gradle/DIJ_cache")
-    var developerProps = file("../.gradle/DIJ_cache/developer.properties")
-
-    if (! dijCacheDir.exists()) {
-        dijCacheDir.mkdir()
-    }
-
-    if (! developerProps.exists()) {
-        developerProps.createNewFile()
-    }
 }
