@@ -1,0 +1,37 @@
+plugins {
+    id 'diginjava.java-application-conventions'
+    id 'org.springframework.boot' version '3.1.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def springVersion = "6.1.1"
+dependencies {
+    implementation project(":auxtools")
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.2.0'
+    implementation group: 'org.springframework', name: 'spring-core', version: "$springVersion"
+    implementation group: 'org.springframework', name: 'spring-beans', version: "$springVersion"
+    implementation group: 'org.springframework', name: 'spring-context', version: "$springVersion"
+}
+
+application {
+    mainClass = "DigInJava.executions.ex_%d.%s"
+}
+
+tasks.register("%d") {
+    var developerProps = new Properties()
+    developerProps.setProperty("developer.lastExNumber", "%d")
+    developerProps.store(new FileWriter(
+        file("../" + (String)project.getProperty("project.DeveloperPropsPath"))
+    ), "DEVELOPER_PROPERTIES")
+
+    dependsOn bootRun
+}

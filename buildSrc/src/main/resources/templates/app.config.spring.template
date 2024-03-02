@@ -1,0 +1,9 @@
+package DigInJava.executions.ex_%d;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+@Configuration
+@ComponentScan("DigInJava.executions.ex_%d")
+@PropertySource("classpath:custom.properties")
+public class AppConfig {}

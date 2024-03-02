@@ -77,6 +77,11 @@ public class CreateNewExecution extends DefaultTask {
             }
             break;
 
+            case "SPRING": {
+                _type = new SpringExModule();
+            }
+            break;
+
             default : {}
         }
     }
